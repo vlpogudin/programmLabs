@@ -1,5 +1,3 @@
-﻿using System.Linq.Expressions;
-
 namespace lab4
 {
     internal class Program
@@ -91,9 +89,9 @@ namespace lab4
                             {
                                 Console.WriteLine("Введите количество элементов массива:");
                                 isConvert = int.TryParse(Console.ReadLine(), out length);
-                                if (!isConvert || length < 0)
+                                if (!isConvert || length < 0 || length > 2147483591)
                                     Console.WriteLine("Неправильно введено число либо выходит из диапазона!\nПопробуйте ещё раз\n");
-                            } while (!isConvert || length < 0);
+                            } while (!isConvert || length < 0 || length > 2147483591);
 
                             arr = new int[length]; // изменение длины массива с заданным числом от пользователя
                             int element; // объявление переменной, отвечающей за элемент массива
@@ -177,8 +175,8 @@ namespace lab4
                                 for (int i = 0; i < newArr.Length - position + 1; i++) // цикл присваивания оставшихся в массиве элементов
                                     newArr[position - 1 + i] = arr[position - 1 + count + i];
                                 arr = newArr; // ссылка нового массива на старый
+                                Console.WriteLine("Удаление элемента(ов) завершено\n");
                             }
-                            Console.WriteLine("Удаление элемента(ов) завершено");
                             break;
                         }
 
@@ -205,17 +203,22 @@ namespace lab4
                                     Console.WriteLine("Неправильно введено число либо выходит из диапазона!\nПопробуйте ещё раз");
                             } while (!isConvert);
 
-                            int[] newArr = new int[arr.Length + 1]; // создание нового массива с длинной, большей старого массива на 1
-                            for (int i = 0; i < position - 1; i++) /* цикл присваивания значений элементов старого массива для нового
-                                                                    до числа с заданной позицией */ 
-                                newArr[i] = arr[i];
-                            newArr[position - 1] = element; // присваивание элементу массива введённого пользователем значения
-                            for (int i = position; i < arr.Length + 1; i++) /* цикл присваивания значений элементов старого массива для нового
+                            if (arr.Length + 1 > 2147483591)
+                                Console.WriteLine("Достигнута максимальная длина массива\nНевозможно добавить элемент\n");
+                            else
+                            {
+                                int[] newArr = new int[arr.Length + 1]; // создание нового массива с длинной, большей старого массива на 1
+                                for (int i = 0; i < position - 1; i++) /* цикл присваивания значений элементов старого массива для нового
+                                                                    до числа с заданной позицией */
+                                    newArr[i] = arr[i];
+                                newArr[position - 1] = element; // присваивание элементу массива введённого пользователем значения
+                                for (int i = position; i < arr.Length + 1; i++) /* цикл присваивания значений элементов старого массива для нового
                                                                             после числа с заданной позицией */
-                                newArr[i] = arr[i - 1];
-                            arr = newArr;
+                                    newArr[i] = arr[i - 1];
+                                arr = newArr;
 
-                            Console.WriteLine("Элемент добавлен в массив\n");
+                                Console.WriteLine("Элемент добавлен в массив\n");
+                            }
                             break;
                         }
 
@@ -326,7 +329,7 @@ namespace lab4
                                 if (numberComparisons == maxNumberComparisons)
                                     Console.WriteLine("Нет такого элемента в массиве\n");
                                 else
-                                    Console.WriteLine($"Количиство сравнений: {numberComparisons}\n");
+                                    Console.WriteLine($"Элемент найден\nКоличиство сравнений: {numberComparisons}\n");
                             }
                             break;
                         }
